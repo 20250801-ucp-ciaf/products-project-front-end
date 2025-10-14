@@ -143,7 +143,13 @@
 
 .product-id {
   color: #7f8c8d;
-  font-size: 0.9rem;
+  font-size: 0.5rem;
+}
+
+.product-image {
+  width: 50%;
+  height: 50%;
+  object-fit: cover;
 }
 
 /* Responsive */

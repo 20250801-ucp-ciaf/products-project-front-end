@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import { Products } from "./components/Products";
+import { Form } from "./components/Form";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -10,7 +12,7 @@ function App() {
     setProducts(data.products);
   };
 
-  const handleSubmit = async (e) => {
+  const handleCreateProduct = async (e) => {
     e.preventDefault();
     const response = await fetch("http://localhost:3001/products", {
       method: "POST",
@@ -20,6 +22,9 @@ function App() {
       body: JSON.stringify({
         name: e.target.name.value,
         price: e.target.price.value,
+        category: e.target.category.value,
+        stock: e.target.stock.value,
+        image: e.target.image.value,
       }),
     });
 
@@ -43,49 +48,8 @@ function App() {
   return (
     <div className="app">
       <h1>Gestión de Productos</h1>
-
-      <div className="form-container">
-        <h2>Crear Nuevo Producto</h2>
-        <form onSubmit={handleSubmit} className="product-form">
-          <div className="form-group">
-            <input
-              type="text"
-              name="name"
-              placeholder="Nombre del producto"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="number"
-              name="price"
-              placeholder="Precio"
-              min="0"
-              step="0.01"
-              required
-            />
-          </div>
-          <button type="submit" className="btn-primary">
-            Crear Producto
-          </button>
-        </form>
-      </div>
-      <div className="products-container">
-        <h2>Lista de Productos</h2>
-        {products.length === 0 ? (
-          <p className="no-products">No hay productos disponibles</p>
-        ) : (
-          <div className="products-grid">
-            {products.map((product) => (
-              <div key={product.id} className="product-card">
-                <h3 className="product-name">{product.name}</h3>
-                <p className="product-price">${product.price}</p>
-                <span className="product-id">ID: {product.id}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <Form onCreateProduct={handleCreateProduct} />
+      <Products products={products} />
     </div>
   );
 }
